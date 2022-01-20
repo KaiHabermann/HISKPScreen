@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <script src="{% static '/javascript/jquery/js/jquery-3.6.0.min.js' %}"></script>
+        <script src="{% static '/javascript/bootstrap-3.3.2-dist/js/bootstrap.min.js' %}"></script>
+    </head>
+    <body>
+        <div id="main_div" name="main_div">
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        function fill_div(num){
+            $.ajax({
+            url: '/div_rotation',
+            success: function(data) {
+                $('#main_div').html(data);
+            }
+            });
+        }
+        $(document).ready(function(){
+            fill_div();
+            setInterval(fill_div,2000);
+        });
+    </script>
+</html>
