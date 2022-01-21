@@ -11,11 +11,22 @@
     </body>
 
     <script type="text/javascript">
-        function fill_div(num){
+        function fill_div(){
             $.ajax({
             url: '/div_rotation',
             success: function(data) {
+                
+                // Get a reference to the last interval + 1
+                const interval_id = window.setInterval(function(){}, Number.MAX_SAFE_INTEGER);
+
+                // Clear any timeout/interval up to that id
+                for (let i = 1; i < interval_id; i++) {
+                    window.clearInterval(i);
+                }
+                //fil div
                 $('#main_div').html(data);
+                // restart own interval
+                setInterval(fill_div,8000); 
             }
             });
         }
