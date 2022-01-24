@@ -4,10 +4,9 @@
         {% load static %}
         <script src="{% static '/javascript/jquery/js/jquery-3.6.0.min.js' %}"></script>
         <script src="{% static '/javascript/bootstrap-3.3.2-dist/js/bootstrap.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static '/styles/main.css' %}" type="text/css">
     </head>
-    <body>
-        <div id="main_div" name="main_div">
-        </div>
+    <body id="bdy" name="bdy">
     </body>
 
     <script type="text/javascript">
@@ -24,7 +23,7 @@
                     window.clearInterval(i);
                 }
                 //fil div
-                $('#main_div').html(data);
+                $('#bdy').html(data);
                 // restart own interval
                 setInterval(fill_div,8000); 
             }

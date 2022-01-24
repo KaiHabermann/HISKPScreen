@@ -1,16 +1,21 @@
 
 
-
-
-<div id="PS_p1" name="PS_p1" style="text-align: center; width:100%">
-        <img id="PS_p1Img" style="max-width: 100%; background-image: url(&quot;https://vistar-capture.web.cern.ch/vistar-capture/sps1.png?0.8056890408664861&quot;); display: inline;"
-         src="https://vistar-capture.web.cern.ch/vistar-capture/sps1.png?0">
+{% load static %}
+<div id="SPS_p1" name="SPS_p1" style="text-align: center; width:100%; height:100%; background-image: url({% static '/images/sps_accelerator.ppm' %}); no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-repeat: no-repeat;
+background-size: cover;
+background-position: center center;">
+<img class="foreground_image" id="SPS_p1Img" style="max-width: 80%; 
+  display: inline; position: center center;" src="url(&quot;https://vistar-capture.web.cern.ch/vistar-capture/sps1.png?0.8056890408664861&quot;);">
 </div>
 <script>
         function reload_immage_SPS_p1(){
-                var SPS_p1 = document.getElementById('PS_p1Img');
+                var SPS_p1 = document.getElementById('SPS_p1Img');
                 SPS_p1.src = "https://vistar-capture.web.cern.ch/vistar-capture/sps1.png?" + Math.random();
-                SPS_p1.style = "max-width: 100%; background-image: url(\"https://vistar-capture.web.cern.ch/vistar-capture/sps1.png?" + Math.random() +"\"); display: inline;"
+                //SPS_p1.style = "max-width: 80%; display: inline; position: center"
         };
         reload_immage_SPS_p1();
         setInterval(reload_immage_SPS_p1,1000);

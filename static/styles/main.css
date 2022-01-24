@@ -1,0 +1,28 @@
+body, html {
+    height: 100%;
+  }
+  
+  .bg {
+    /* The image used */
+    background-image: url("/static/images/LHCb_detector.png");
+  
+    /* Full height */
+    height: 100%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+
+  .background_image {
+    position: center;
+    border: 1px solid #000000;
+    z-index: 1;
+  }
+  .foreground_image{
+    position: center;
+    border: 1px solid #000000;
+    z-index: 2;
+  }
