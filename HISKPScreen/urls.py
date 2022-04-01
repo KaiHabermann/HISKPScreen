@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',internal_view.main),
     path('div_rotation',internal_view.rotation),
+    path('PoD',internal_view.particle_of_the_day),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

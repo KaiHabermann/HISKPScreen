@@ -3,3 +3,4 @@ psycopg2>=2.8
 bs4
 requests
 pyspellchecker
+pdf2image

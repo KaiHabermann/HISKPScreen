@@ -1,12 +1,15 @@
+from datetime import datetime
 from bs4 import BeautifulSoup
 import requests
 import urllib
+import time
 from data_services.database_connections import get_conn_and_cur
 from spellchecker import SpellChecker
+from pdf2image import convert_from_bytes
 
 
 __exclusions__ = ["Searches","mixture","Mixing","Decay","Number","Properties","States","and"]
-__data_folder__ = "/code/static/particle_immages/"
+__data_folder__ = "/code/static/particle_images/"
 
 def has_normal_text(string):
     try:
@@ -37,10 +40,20 @@ def wanted_category(string):
     return False
 
 def download_file(download_url, filename):
-    response = urllib. request. urlopen(download_url)
-    file = open(filename, 'wb')
-    file. write(response. read())
-    file. close()
+    response = urllib. request. urlopen(download_url).read()
+    pages = convert_from_bytes(response,single_file=True)
+    page = pages[0]
+    path = filename.replace("pdf","jpeg")
+    page.save(path , 'JPEG')
+    return path
+
+def update_needed(particles_new:dict):
+    conn,cur = get_conn_and_cur("particle_db")
+    cur.execute("""SELECT * FROM public.particles""")
+    particles = list(cur.fetchall())
+    conn.close()
+    names = [p['name'] for p in particles]
+    return any(p not in names for p in particles_new.keys()) or any((p["date"] - datetime.now()).total_seconds() > (24 * 14 * 3600) for p in particles)
 
 def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
     link = main_page + "listings/contents_listings.html"
@@ -61,21 +74,34 @@ def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
             for particle in Ptype.find_all(class_="list-group-item") 
             if wanted(particle.find(class_="iframe").text)})
 
-    conn, cur = get_conn_and_cur("particle_db")
+    if update_needed(particles):
+        conn, cur = get_conn_and_cur("particle_db")
+        query = """DROP TABLE IF EXISTS public.particles"""
+        cur.execute(query)
+        query = """CREATE TABLE IF NOT EXISTS public.particles (name text, link text, data_path text, date TIMESTAMP);"""
+        cur.execute(query)
+        conn.commit()
+        for name,link in particles.items():
+            print(name)
+        for name,link in particles.items():
+            path = __data_folder__ + link.split("/")[-1]
+            new_path = download_file(link,path)
+            cur.execute("""INSERT INTO public.particles (name,link, data_path,date) values (%s,%s,%s,%s)""",(name,link,new_path,datetime.now()))
+            print(name,new_path)
+            conn.commit()
+        conn.commit()
+    else:
+        print("Particles up to date")
 
-    query = """CREATE TABLE IF NOT EXISTS public.particles (name text, link text, data_path text);"""
-    cur.execute(query)
-    query = """TRUNCATE TABLE public.particles"""
-    cur.execute(query)
-    
-    for name,link in particles.items():
-        print(name)
-    for name,link in particles.items():
-        path = __data_folder__ + link.split("/")[-1]
-        download_file(link,path)
-        cur.execute("""INSERT INTO public.particles (name,link, data_path) values (%s,%s,%s)""",(name,link,path))
-        print(name,path)
-    conn.commit()
+def update_loop():
+    t = 24*3600 # a day
+    while True:
+        try:
+            update_particles()
+            time.sleep(t)
+        except Exception as e:
+            print(e)
+            time.sleep(t)
 
 if __name__=="__main__":
-    update_particles()
+    update_loop()
