@@ -90,8 +90,7 @@ def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
             print(name,new_path)
             conn.commit()
         conn.commit()
-    else:
-        print("Particles up to date")
+    print("Particles up to date")        
 
 def update_loop():
     t = 24*3600 # a day

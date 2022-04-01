@@ -56,7 +56,7 @@ ROOT_URLCONF = 'HISKPScreen.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['static','javascript'],
+        'DIRS': ['static','javascript','particle_images','static/particle_images'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,7 +127,7 @@ USE_TZ = True
 STATIC_ROOT = ""
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    BASE_DIR / "static/",
+    BASE_DIR / "static/", 
 )
 
 # Default primary key field type

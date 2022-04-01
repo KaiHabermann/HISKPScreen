@@ -21,7 +21,8 @@ def rotation(request):
     
     f = __pages__[__CALLS__]
     __CALLS__ = (__CALLS__ + 1) % len(__pages__)
-    return render(request,f) 
+    pod = get_pod()
+    return render(request,f,{'location':pod['data_path'].split("/static")[-1]}) 
 
 def check_and_update_time():
     global __particle_time__
@@ -42,6 +43,12 @@ def update_particle_of_the_day():
         cur.execute("""SELECT * FROM public.particles""")
         particles = list(cur.fetchall())
         __particle_of_the_day__ = random.choice(particles)
+
+def get_pod():
+    update_particle_of_the_day()
+    print(__particle_of_the_day__['data_path'])
+    return __particle_of_the_day__
+
 
 def particle_of_the_day(request):
     global __particle_of_the_day__
