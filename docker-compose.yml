@@ -15,7 +15,7 @@ services:
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000 & python manage.py collectstatic
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
@@ -26,6 +26,27 @@ services:
       - POSTGRES_PASSWORD=postgres
     depends_on:
       - db
+      - migrate
+      - particles
     links:
       - "db"
       - "db:database"
+  migrate:
+    build: .
+   # command: python manage.py migrate
+    volumes:
+      - .:/code
+    links:
+      - db
+    depends_on:
+      - db
+  particles:
+    build: .
+    command: python HISKPScreen/particle_manager.py
+    volumes:
+      - .:/code
+    links:
+      - db
+    depends_on:
+      - db
+      

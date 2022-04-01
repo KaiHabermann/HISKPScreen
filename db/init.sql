@@ -1,1 +1,2 @@
 CREATE DATABASE main_db;
+CREATE DATABASE particle_db;
