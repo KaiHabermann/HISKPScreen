@@ -1,11 +1,30 @@
 <style>
   #PoD {
-      position: relative;
+      position: absolute;
+      width: 300px;
+      margin: 0 auto; 
+      right: 250px;
+      top: 75px ;
+      display: flex;
+      text-align:center;
+      justify-content: center;
+      align-items: center;
   }
   #PoD img {
       position: absolute;
-      top: 150px;
-      right: 100px;
+      vertical-align:middle;
+      top: 75px;
+  }
+  .center {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+  #PoD h2 {
+    display:inline-block;
+    vertical-align:middle;
   }
   #LHC_p1_container {
       position: relative;
@@ -27,7 +46,8 @@ background-size: cover;
 background-position: center center;
 position: relative">
   <div id="PoD" class="PoD">
-    <img id="PoD_Img" src="{% static location %}" alt="Aleq" width="420" height="600"">
+    <img id="PoD_Img" src="{% static location %}" alt="Aleq" width="420" height="600" title="Particle of the day">
+    <div class="center"> <h2>Particle of the day</h2></div>
 </div>
   <div id="LHC_p1_container" class="image_container_LHC">
     <img id="LHC_p1Img" src="https://vistar-capture.web.cern.ch/vistar-capture/lhc1.png?0" alt="Aleq" >
