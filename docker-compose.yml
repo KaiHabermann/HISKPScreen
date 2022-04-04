@@ -31,7 +31,7 @@ services:
     links:
       - "db"
       - "db:database"
-    restart: on-faiulre
+    restart: on-failure
   migrate:
     build: .
    # command: python manage.py migrate
