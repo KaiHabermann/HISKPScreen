@@ -29,9 +29,7 @@ def check_and_update_time():
     if __particle_time__ is None:
         __particle_time__ = datetime.now()
         return True
-    else:
-        diff = datetime.now() - __particle_time__
-    if diff.total_seconds()/3600. >= 24:
+    if datetime.today().date() > __particle_time__.date():
         __particle_time__ = datetime.now()
         return True
     return False  

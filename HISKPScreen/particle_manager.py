@@ -48,12 +48,15 @@ def download_file(download_url, filename):
     return path
 
 def update_needed(particles_new:dict):
-    conn,cur = get_conn_and_cur("particle_db")
-    cur.execute("""SELECT * FROM public.particles""")
-    particles = list(cur.fetchall())
-    conn.close()
-    names = [p['name'] for p in particles]
-    return any(p not in names for p in particles_new.keys()) or any((p["date"] - datetime.now()).total_seconds() > (24 * 14 * 3600) for p in particles)
+    try:
+        conn,cur = get_conn_and_cur("particle_db")
+        cur.execute("""SELECT * FROM public.particles""")
+        particles = list(cur.fetchall())
+        conn.close()
+        names = [p['name'] for p in particles]
+        return any(p not in names for p in particles_new.keys()) or any((p["date"] - datetime.now()).total_seconds() > (24 * 14 * 3600) for p in particles)
+    except:
+        return True
 
 def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
     link = main_page + "listings/contents_listings.html"
@@ -80,7 +83,6 @@ def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
         cur.execute(query)
         query = """CREATE TABLE IF NOT EXISTS public.particles (name text, link text, data_path text, date TIMESTAMP);"""
         cur.execute(query)
-        conn.commit()
         for name,link in particles.items():
             print(name)
         for name,link in particles.items():
@@ -88,7 +90,6 @@ def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
             new_path = download_file(link,path)
             cur.execute("""INSERT INTO public.particles (name,link, data_path,date) values (%s,%s,%s,%s)""",(name,link,new_path,datetime.now()))
             print(name,new_path)
-            conn.commit()
         conn.commit()
     print("Particles up to date")        
 
@@ -101,6 +102,14 @@ def update_loop():
         except Exception as e:
             print(e)
             time.sleep(t)
+
+def get_current_particles():
+    conn,cur = get_conn_and_cur("particle_db")
+    cur.execute("""SELECT * from public.particles""")
+    data = cur.fetchall()
+    for d in data:
+        print(d)
+    return data
 
 if __name__=="__main__":
     update_loop()
