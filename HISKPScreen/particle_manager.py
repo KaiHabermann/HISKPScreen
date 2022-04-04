@@ -1,4 +1,6 @@
 from datetime import datetime
+import os
+
 from bs4 import BeautifulSoup
 import requests
 import urllib
@@ -97,6 +99,7 @@ def update_loop():
     t = 24*3600 # a day
     while True:
         try:
+            create_folders()
             update_particles()
             time.sleep(t)
         except Exception as e:
@@ -110,6 +113,10 @@ def get_current_particles():
     for d in data:
         print(d)
     return data
+
+def create_folders():
+    if not os.path.exists(__data_folder__):
+        os.makedirs(__data_folder__)
 
 if __name__=="__main__":
     update_loop()
