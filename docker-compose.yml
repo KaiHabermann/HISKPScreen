@@ -30,7 +30,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     depends_on:
-      - db:
+      db:
         condition: service_healthy
       - migrate
       - particles
