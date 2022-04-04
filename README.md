@@ -1,4 +1,5 @@
 To view Webpage:
+- mkdir staic/particle_images
 - docker-compose up 
 - type localhost:8000 into your webbrowser
 - enjoy
