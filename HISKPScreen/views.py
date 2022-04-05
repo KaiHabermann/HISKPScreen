@@ -4,7 +4,7 @@ import random
 
 from HISKPScreen.data_services.database_connections import get_conn_and_cur
 __CALLS__ = 0
-__pages__ = ["SPS_page1.html","LHC_page1.html"]
+__pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html"]
 __particle_time__ = None
 __particle_of_the_day__ = None
 
