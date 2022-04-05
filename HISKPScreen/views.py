@@ -3,8 +3,9 @@ from datetime import datetime
 import random
 
 from HISKPScreen.data_services.database_connections import get_conn_and_cur
+from HISKPScreen.indico_service import get_week_plan, get_indico_screengrab
 __CALLS__ = 0
-__pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html"]
+__pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html",get_week_plan().split("/")[-1]]
 __particle_time__ = None
 __particle_of_the_day__ = None
 
@@ -22,6 +23,8 @@ def rotation(request):
     f = __pages__[__CALLS__]
     __CALLS__ = (__CALLS__ + 1) % len(__pages__)
     pod = get_pod()
+    get_week_plan()
+    get_indico_screengrab()
     return render(request,f,{'location':pod['data_path'].split("/static")[-1]}) 
 
 def check_and_update_time():
