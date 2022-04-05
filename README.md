@@ -3,6 +3,7 @@ To view Webpage:
   - sudo apt-get update  
   - sudo apt-get install -y docker
   - sudo apt-get install -y docker-compose
+  - (maybe needed) sudo service start docker
 - sudo docker-compose up 
 - type localhost:8000 into your webbrowser
 - enjoy
