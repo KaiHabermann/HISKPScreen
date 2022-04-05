@@ -12,6 +12,7 @@ from pdf2image import convert_from_bytes
 
 __exclusions__ = ["Searches","mixture","Mixing","Decay","Number","Properties","States","and"]
 __data_folder__ = "/code/static/particle_images/"
+__pdg_live__ = "https://pdglive.lbl.gov/Viewer.action"
 
 def has_normal_text(string):
     try:
@@ -95,6 +96,17 @@ def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
         conn.commit()
     print("Particles up to date")        
 
+def particle_database_from_pdg_live():
+    link = __pdg_live__
+    url = requests.get(link)
+    htmltext = url.text
+    DOMdocument = BeautifulSoup(htmltext, 'html.parser')
+    # print(DOMdocument)
+    particles = DOMdocument.find_all(class_="pdgLiveLink")
+
+    for p in particles:
+        print(p.text)
+    
 def update_loop():
     t = 24*3600 # a day
     while True:
@@ -119,4 +131,5 @@ def create_folders():
         os.makedirs(__data_folder__)
 
 if __name__=="__main__":
+    # particle_database_from_pdg_live()
     update_loop()
