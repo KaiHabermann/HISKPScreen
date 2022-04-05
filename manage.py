@@ -4,8 +4,19 @@ import imp
 import os
 import sys
 from HISKPScreen.data_services.setup import database_setup
+from HISKPScreen.data_services.database_connections import get_conn_and_cur
 import time
 
+__PG_TIMEOUT__ = 100
+
+def wait_PG():
+    for _ in range(__PG_TIMEOUT__):
+        try:
+            get_conn_and_cur("main_db")
+            return True
+        except:
+            time.sleep(1)
+    return False
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'HISKPScreen.settings')
@@ -22,5 +33,5 @@ def main():
 
 
 if __name__ == '__main__':
-    time.sleep(10)
+    wait_PG()
     main()
