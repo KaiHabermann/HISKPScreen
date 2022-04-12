@@ -21,17 +21,16 @@
         right: 0;
         text-align: center;
         width : 70%;
+        height : 90%;
 }
 </style>
 {% load static %}
 <div id="SPS_p1" name="SPS_p1" style="text-align: center; width:100%; height:100%; background-image: url({% static '/images/CERN_map.jpg' %}); no-repeat center center fixed; 
--webkit-background-size: cover;
--moz-background-size: cover;
--o-background-size: cover;
 background-repeat: no-repeat;
-background-size: cover;
-background-position: center center;">
-<img class="foreground_image" id="SPS_p1Img" style="max-width: 80%;" alt=" " src="url(&quot;https://vistar-capture.web.cern.ch/vistar-capture/sps1.png?0.8056890408664861&quot;);">
+background-position: center center;
+position: relative">
+<img class="foreground_image" id="SPS_p1Img" style="max-width: 80%;" alt=" " src="url(&quot;https://vistar-capture.web.cern.ch/vistar-capture/sps1.png?0.8056890408664861&quot;);"
+onerror=" if (this.src != &quot;{% static '/images/cant_load_image.jpg' %}&quot; ) this.src = &quot; {% static '/images/cant_load_image.jpg' %} &quot; ;">
 </div>
 <script>
         function reload_immage_SPS_p1(){

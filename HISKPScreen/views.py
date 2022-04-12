@@ -5,7 +5,7 @@ import random
 from HISKPScreen.data_services.database_connections import get_conn_and_cur
 from HISKPScreen.indico_service import get_week_plan, get_indico_screengrab
 __CALLS__ = 0
-__pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html",get_week_plan().split("/")[-1]]
+__pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html",get_week_plan().split("/")[-1],"particle_of_the_day.html"]
 __particle_time__ = None
 __particle_of_the_day__ = None
 
