@@ -4,10 +4,53 @@ import random
 
 from HISKPScreen.data_services.database_connections import get_conn_and_cur
 from HISKPScreen.indico_service import get_week_plan, get_indico_screengrab
-__CALLS__ = 0
+__CONNECTIONS__ = {}
 __pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html",get_week_plan().split("/")[-1],"particle_of_the_day.html"]
 __particle_time__ = None
 __particle_of_the_day__ = None
+
+
+class connection:
+    def __init__(self,ip,timeout = 30):
+        self.__ip = ip
+        self.last_call = datetime.now()
+        self.__calls = 0
+        self.timeout = timeout
+
+    def check(self):
+        t = datetime.now()
+        diff = (t-self.last_call).seconds
+        if diff > self.timeout:
+            return False
+        return True    
+        
+    @property
+    def calls(self):
+        global __CALLS__, __pages__
+        c = self.__calls
+        self.__calls = (self.__calls + 1) % len(__pages__)
+        self.last_call = datetime.now()
+        return c
+
+
+def update_connections():
+    global __CONNECTIONS__
+    timeouted_ips = []
+    for ip,conn in __CONNECTIONS__.items():
+        print("%s is %s"%(ip,{True:"active",False:"inactive"}[conn.check()]))
+        if not conn.check():
+            timeouted_ips.append(ip)
+    for ip in timeouted_ips:
+        del __CONNECTIONS__[ip]
+    
+
+def get_connection(adress):
+    global __CONNECTIONS__
+    update_connections()
+    if __CONNECTIONS__.get(adress,None) is None:
+        __CONNECTIONS__[adress] = connection(adress)
+    return __CONNECTIONS__[adress]
+
 
 def SPS(request):
     return render(request,"SPS_page1.html")
@@ -18,10 +61,10 @@ def read_html(html_file):
     return data
 
 def rotation(request):
-    global __CALLS__, __pages__
-    
-    f = __pages__[__CALLS__]
-    __CALLS__ = (__CALLS__ + 1) % len(__pages__)
+    global __pages__
+    adress = request.META.get("REMOTE_ADDR")
+    conn = get_connection(adress)
+    f = __pages__[conn.calls]
     pod = get_pod()
     get_week_plan()
     get_indico_screengrab()
@@ -53,6 +96,7 @@ def get_pod():
 
 def particle_of_the_day(request):
     global __particle_of_the_day__
+
     update_particle_of_the_day()
     print(__particle_of_the_day__['data_path'])
     return render(request,"particle_of_the_day.html",{'location':__particle_of_the_day__['data_path'].split("/static")[-1]})
