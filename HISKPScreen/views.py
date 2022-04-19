@@ -7,11 +7,6 @@ from HISKPScreen.indico_service import get_week_plan, get_indico_screengrab
 __CONNECTIONS__ = {}
 # __pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html",get_week_plan().split("/")[-1],"particle_of_the_day.html","QRCode.html"]
 __pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html","particle_of_the_day.html","QRCode.html"]
-
-__particle_time__ = None
-__particle_of_the_day__ = None
-
-
 class connection:
     def __init__(self,ip,timeout = 30):
         self.__ip = ip
@@ -34,7 +29,6 @@ class connection:
         self.last_call = datetime.now()
         return c
 
-
 def update_connections():
     global __CONNECTIONS__
     timeouted_ips = []
@@ -45,14 +39,12 @@ def update_connections():
     for ip in timeouted_ips:
         del __CONNECTIONS__[ip]
     
-
 def get_connection(adress):
     global __CONNECTIONS__
     update_connections()
     if __CONNECTIONS__.get(adress,None) is None:
         __CONNECTIONS__[adress] = connection(adress)
     return __CONNECTIONS__[adress]
-
 
 def SPS(request):
     return render(request,"SPS_page1.html")
@@ -98,8 +90,7 @@ def check_and_update_time():
     t = pod["date"]
     if datetime.today().date() > t.date():
         return True
-    return False  
-
+    return False 
 
 def update_particle_of_the_day():
     if check_and_update_time():
