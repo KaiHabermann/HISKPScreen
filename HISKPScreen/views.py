@@ -72,36 +72,52 @@ def rotation(request):
     get_indico_screengrab()
     return render(request,f,{'location':pod['data_path'].split("/static")[-1]}) 
 
+def get_pod_from_db():
+    try:
+        conn,cur = get_conn_and_cur("particle_db")
+        cur.execute("SELECT * FROM public.pod")
+        pod = cur.fetchone()
+        return pod
+    except:
+        return None
+
+def save_pod(pod_dict):
+    conn,cur = get_conn_and_cur("particle_db")
+    cur.execute("CREATE TABLE IF NOT EXISTS public.pod (name text, link text, data_path text, date TIMESTAMP);")
+    cur.execute("TRUNCATE TABLE public.pod")
+    dtc = pod_dict.copy()
+    dtc["date"] = datetime.now()
+    cur.execute("INSERT INTO public.pod(name, link, data_path, date) values(%(name)s,%(link)s,%(data_path)s,%(date)s)",dtc)
+    conn.commit()
+    conn.close()
+
 def check_and_update_time():
-    global __particle_time__
-    if __particle_time__ is None:
-        __particle_time__ = datetime.now()
+    pod = get_pod_from_db()
+    if pod is None:
         return True
-    if datetime.today().date() > __particle_time__.date():
-        __particle_time__ = datetime.now()
+    t = pod["date"]
+    if datetime.today().date() > t.date():
         return True
     return False  
 
+
 def update_particle_of_the_day():
-    global __particle_of_the_day__
     if check_and_update_time():
         conn,cur = get_conn_and_cur("particle_db")
         cur.execute("""SELECT * FROM public.particles""")
         particles = list(cur.fetchall())
-        __particle_of_the_day__ = random.choice(particles)
+        pod = random.choice(particles)
+        save_pod(pod)
 
 def get_pod():
     update_particle_of_the_day()
-    print(__particle_of_the_day__['data_path'])
-    return __particle_of_the_day__
+    return get_pod_from_db()
 
 
 def particle_of_the_day(request):
-    global __particle_of_the_day__
 
     update_particle_of_the_day()
-    print(__particle_of_the_day__['data_path'])
-    return render(request,"particle_of_the_day.html",{'location':__particle_of_the_day__['data_path'].split("/static")[-1]})
+    return render(request,"particle_of_the_day.html",{'location':get_pod()['data_path'].split("/static")[-1]})
 
 def main(request):
     return render(request,"main.html")
