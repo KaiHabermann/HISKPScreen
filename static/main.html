@@ -25,13 +25,13 @@
                 //fil div
                 $('#bdy').html(data);
                 // restart own interval
-                setInterval(fill_div,8000); 
+                setInterval(fill_div,{{ rotation_time }}); 
             }
             });
         }
         $(document).ready(function(){
             fill_div();
-            setInterval(fill_div,8000);
+            setInterval(fill_div,{{ rotation_time }});
         });
     </script>
 </html>

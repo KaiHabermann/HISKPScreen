@@ -7,6 +7,7 @@ from HISKPScreen.indico_service import get_week_plan, get_indico_screengrab
 __CONNECTIONS__ = {}
 # __pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html",get_week_plan().split("/")[-1],"particle_of_the_day.html","QRCode.html"]
 __pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html","particle_of_the_day.html","QRCode.html"]
+__rotation_time__ = 16000
 class connection:
     def __init__(self,ip,timeout = 30):
         self.__ip = ip
@@ -111,4 +112,4 @@ def particle_of_the_day(request):
     return render(request,"particle_of_the_day.html",{'location':get_pod()['data_path'].split("/static")[-1]})
 
 def main(request):
-    return render(request,"main.html")
+    return render(request,"main.html",{'rotation_time':__rotation_time__})
