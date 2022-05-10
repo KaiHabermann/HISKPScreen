@@ -61,7 +61,7 @@ def update_needed(particles_new:dict):
     except:
         return True
 
-def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
+def update_particles_pdg(    main_page = "https://pdg.lbl.gov/2021/"):
     link = main_page + "listings/contents_listings.html"
     url = requests.get(link)
     htmltext = url.text
@@ -95,6 +95,20 @@ def update_particles(    main_page = "https://pdg.lbl.gov/2021/"):
             print(name,new_path)
         conn.commit()
     print("Particles up to date")        
+
+
+def update_particles():
+    conn,cur = get_conn_and_cur("particle_db")
+    import glob, os
+    os.chdir("static/particle_images/")
+    cur.execute("TRUNCATE public.particles;")
+    for file in glob.glob("*.png"):
+        print(file)
+        cur.execute("""INSERT INTO public.particles (name,link, data_path,date) values (%s,%s,%s,%s) ON CONFLICT DO NOTHING""",("","","particle_images/"+file,datetime.now()))
+    conn.commit()
+    print("Update done!")
+
+
 
 def particle_database_from_pdg_live():
     link = __pdg_live__

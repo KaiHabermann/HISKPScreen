@@ -67,15 +67,20 @@
 </style>
 
 
-
 {% load static %}
-<div id="LHC_p1" name="LHC_p1" style="text-align: center; vertical-align: middle; horizontal-align: middle; background-image: url({% static '/images/HISKP_LOGO.jpg' %}); 
+<!--  onerror=" if (this.src != &quot;{% static '/images/cant_load_image.jpg' %}&quot; ) this.src = &quot; {% static '/images/HISKP_dark.png' %} &quot; ;"  -->
+
+<!--  -->
+<div id="LHC_p1" name="LHC_p1" style="text-align: center; vertical-align: middle; horizontal-align: middle; 
+background-image: url({% static '/images/HISKP_dark.png' %});
+background-color: #000000;
 background-repeat: no-repeat;
 background-position: center center;
 position: relative">
   <div id="LHC_p1_container" class="image_container_LHC">
     <img id="LHC_p1Img" src="https://vistar-capture.web.cern.ch/vistar-capture/lhc1.png?0" alt=" " style="background-color: #000000;padding: 30px;border-radius: 15px;"
-    onerror=" if (this.src != &quot;{% static '/images/cant_load_image.jpg' %}&quot; ) this.src = &quot; {% static '/images/cant_load_image.jpg' %} &quot; ;">
+    onerror="fill_div()"
+    >
   </div>
   <div id="QR_container" class="image_container_LHC">
     <!--<h1 id="QR_text">Learn More:</h1> -->

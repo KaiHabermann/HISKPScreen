@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from datetime import datetime
 import random
+import os
 
 from HISKPScreen.data_services.database_connections import get_conn_and_cur
 from HISKPScreen.indico_service import get_week_plan, get_indico_screengrab
@@ -8,6 +9,38 @@ __CONNECTIONS__ = {}
 # __pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html",get_week_plan().split("/")[-1],"particle_of_the_day.html","QRCode.html"]
 __pages__ = ["SPS_page1.html","LHC_page1.html","HISKP_LOGO.html","particle_of_the_day.html","QRCode.html"]
 __rotation_time__ = 16000
+
+def ping(url):
+    response = os.system("ping -c 1 " + url + " > /dev/null")
+    return bool(response == 0)
+
+class page:
+    def __init__(self,location,name="",dependencies = None):
+        self.location = location # where is the file? just the name is enough if it is in static
+        self.name = name # what should this site be called? 
+        self.dependecies = dependencies  # what links are loaded on the site? We ping them before display to avoid errors
+        # please allso let the site call rotation, if any load fails or display a proper backup image/site
+
+    def check(self):
+        if self.dependecies is None:
+            return True
+        for dependency in self.dependecies:
+            try:
+                if not ping(dependency):
+                    print("Dependency %s for page %s at location %s was not reachable. Skipping!"%(dependency,self.name,self.location))
+                    return False
+                return True
+            except:
+                print("Dependency %s for page %s at location %s was not reachable. Skipping!"%(dependency,self.name,self.location))
+                return False
+
+__pages__ = [page("SPS_page1.html","SPS page 1",["vistar-capture.web.cern.ch"]),
+            page("LHC_page1.html","LHC page 1",["vistar-capture.web.cern.ch"]),
+            page("HISKP_LOGO.html","HISKP Logo"),
+            page("particle_of_the_day.html","Particle of the Day"),
+            page("QRCode.html","Group Neubert")]
+
+
 class connection:
     def __init__(self,ip,timeout = 30):
         self.__ip = ip
@@ -60,6 +93,9 @@ def rotation(request):
     adress = request.META.get("REMOTE_ADDR")
     conn = get_connection(adress)
     f = __pages__[conn.calls]
+    while not f.check():
+        f = __pages__[conn.calls]
+    f = f.location
     pod = get_pod()
     get_week_plan()
     get_indico_screengrab()
