@@ -34,8 +34,8 @@ class page:
                 print("Dependency %s for page %s at location %s was not reachable. Skipping!"%(dependency,self.name,self.location))
                 return False
 
-__pages__ = [page("SPS_page1.html","SPS page 1",["vistar-capture.web.cern.ch"]),
-            page("LHC_page1.html","LHC page 1",["vistar-capture.web.cern.ch"]),
+__pages__ = [page("SPS_page1.html","SPS page 1",["vistar-capture.s3.cern.ch"]),
+            page("LHC_page1.html","LHC page 1",["vistar-capture.s3.cern.ch"]),
             page("HISKP_LOGO.html","HISKP Logo"),
             page("particle_of_the_day.html","Particle of the Day"),
             page("Group_Neubert.html","Group Neubert")]
