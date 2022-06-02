@@ -22,7 +22,7 @@ class page:
         # please allso let the site call rotation, if any load fails or display a proper backup image/site
 
     def check(self):
-        if self.dependecies is None:
+        if self.dependecies is None or len(self.dependecies) == 0:
             return True
         for dependency in self.dependecies:
             try:
@@ -38,7 +38,7 @@ __pages__ = [page("SPS_page1.html","SPS page 1",["vistar-capture.web.cern.ch"]),
             page("LHC_page1.html","LHC page 1",["vistar-capture.web.cern.ch"]),
             page("HISKP_LOGO.html","HISKP Logo"),
             page("particle_of_the_day.html","Particle of the Day"),
-            page("QRCode.html","Group Neubert")]
+            page("Group_Neubert.html","Group Neubert")]
 
 
 class connection:
@@ -96,6 +96,7 @@ def rotation(request):
     while not f.check():
         f = __pages__[conn.calls]
     f = f.location
+    print("Returning %s to adress %s"%(f,adress))
     pod = get_pod()
     get_week_plan()
     get_indico_screengrab()

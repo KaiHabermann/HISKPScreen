@@ -1,0 +1,70 @@
+<style>
+html {
+    margin: 0;
+    height: 100%;
+}
+{% load static %}
+body {
+    background-image: url({% static '/images/LHCb_detector.png' %});
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+#PoD {
+    position: relative;
+    width: 100%;
+    margin: 0 auto; 
+    top: 0px ;
+    display: flex;
+    text-align:center;
+    justify-content: center;
+    align-items: center;
+}
+#PoD img {
+    position: absolute;
+    vertical-align:middle;
+    width:15%;
+    top: 75px;
+    right: 10%; 
+}
+
+#advert1 {
+    position: absolute;
+    vertical-align:middle;
+    width:30%;
+    top: 5%;
+    left: 10%; 
+}
+
+#advert2 {
+    position: absolute;
+    vertical-align:middle;
+    width:55%;
+    top: 50%;
+    left: 44%; 
+}
+
+#title_text{
+    position: absolute;
+    vertical-align:middle;
+    text-align: center;
+    width:30%;
+    top: 15%;
+    left: 45%; 
+    color:#00ec3b;
+}
+</style>
+
+{% load static %}
+<div id="LHC_p1" name="LHC_p1" style="text-align: center; vertical-align: middle; width:100%; height:100%;">
+<div id="PoD" class="PoD">
+    <!--  <div class="center"> <h2 style="color:rgb(255, 255, 255);">Homepage</h2></div> -->    
+    <img id="PoD_Img" src="{% static '/images/qrcode_homepage.png' %}" alt=" " title="Homepage"> 
+</div>
+<img id="advert1" src="{% static '/images/Werbung.png' %}" alt=" Hier könnte Ihre Werbung stehen " title="Advertisment"> 
+<img id="advert2" src="{% static '/images/mighty_pix.png' %}" alt=" Hier könnte Ihre Werbung stehen " title="Advertisment"> 
+<h1 id="title_text">
+    AG Neubert<br>
+    Hadrons and Stuff
+</h1>
+
+</div>

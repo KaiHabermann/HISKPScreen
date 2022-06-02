@@ -11,6 +11,17 @@
     vertical-align:middle;
   }
 
+  html {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+    background-color: #000000;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
 #LHC_p1 {
       position: relative;
       width : 100%;
@@ -25,6 +36,13 @@
         text-align: center;
         width : 60%;
         height : 80%;
+}
+
+#LHC_p1 h1 {
+  position: absolute
+  top: 30px;
+  text-align: center;
+  color: #ffffff;
 }
 
 #QR_container {
@@ -77,9 +95,10 @@ background-color: #000000;
 background-repeat: no-repeat;
 background-position: center center;
 position: relative">
+  <h1>LHC Beam Status</h1>
   <div id="LHC_p1_container" class="image_container_LHC">
-    <img id="LHC_p1Img" src="https://vistar-capture.web.cern.ch/vistar-capture/lhc1.png?0" alt=" " style="background-color: #000000;padding: 30px;border-radius: 15px;"
-    onerror="fill_div()"
+    <img id="LHC_p1Img" src="https://vistar-capture.s3.cern.ch/lhc1.png?0" alt=" " style="background-color: #000000;padding: 30px;border-radius: 15px;"
+    onerror="if (errors > 5){fill_div();} else{reload_immage_LCH_p1();errors = errors + 1}"
     >
   </div>
   <div id="QR_container" class="image_container_LHC">
@@ -89,9 +108,10 @@ position: relative">
 
 
 <script>
+  errors = 0
   function reload_immage_LCH_p1(){
     var LHC_p1 = document.getElementById('LHC_p1Img');
-    LHC_p1.src = "https://vistar-capture.web.cern.ch/vistar-capture/lhc1.png?" + Math.random();
+    LHC_p1.src = "https://vistar-capture.s3.cern.ch/lhc1.png?" + Math.random();
     //LHC_p1.style = "max-width: 80%; display: inline; position: center";
   };
   reload_immage_LCH_p1();
