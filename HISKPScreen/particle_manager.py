@@ -40,6 +40,20 @@ def create_folders():
     if not os.path.exists(__data_folder__):
         os.makedirs(__data_folder__)
 
+def startup():
+    conn,cur = get_conn_and_cur("particle_db")
+    query = """
+        CREATE TABLE IF NOT EXISTS particle_db.public.particles (
+        name text,
+        link text , 
+        data_path text,
+        date TIMESTAMP
+        );
+    """
+    cur.execute(query)
+    conn.commit()
+
 if __name__=="__main__":
     # particle_database_from_pdg_live()
+    startup()
     update_loop()
