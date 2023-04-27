@@ -20,3 +20,5 @@ To add new page to rotation:
 - The description of the merge request now needs the following:
   - A list of all html files, which should be added to rotation
   - A list of the outside dependencies (Websites, where data is grabbed from) per HTML.
+  
+- The TV has a 4K resolution. Thus if you want to be as secure as possible, just create a 4K PNG of whatever you want to show and you are set with a verry simple HTML
