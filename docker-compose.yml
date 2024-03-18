@@ -12,6 +12,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5432:5432"
+    restart: always  
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -34,7 +35,7 @@ services:
     links:
       - "db"
       - "db:database"
-    restart: on-failure
+    restart: always
   migrate:
     build: .
    # command: python manage.py migrate
@@ -43,7 +44,7 @@ services:
     links:
       - db
     depends_on:
-      - db
+      - db  
   particles:
     build: .
     command: python HISKPScreen/particle_manager.py
@@ -53,4 +54,4 @@ services:
       - db
     depends_on:
       - db
-    
+    restart: always
